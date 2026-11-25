@@ -27,6 +27,7 @@ def channel_post_text(data: dict) -> str:
             "━━━━━━━━━━━━━━\n\n"
             f"{comment_line}\n"
             f"📩 <b>Aloqa:</b> {contact}\n\n"
+            "E'lon berish uchun: @namuna001_bot\n"
             "#eFootball #akkaunt #sotiladi"
         )
 
@@ -37,6 +38,7 @@ def channel_post_text(data: dict) -> str:
         "━━━━━━━━━━━━━━\n"
         f"{comment_line}\n"
         f"📩 <b>Aloqa:</b> {contact}\n\n"
+        "E'lon berish uchun: @namuna001_bot\n"
         "#eFootball #akkaunt #qidirilmoqda"
     )
 
