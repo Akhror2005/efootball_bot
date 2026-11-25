@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Maxfiy ma'lumotlar
+.env
+config.py
+
+# Telethon session
+session/
+sessions/
+*.session
+*.session-journal
+
+# Database
+*.db
+
+# IDE
+.idea/
+.vscode/
