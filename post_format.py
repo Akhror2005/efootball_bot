@@ -23,11 +23,11 @@ def channel_post_text(data: dict) -> str:
             f"💸 <b>Narxi:</b> {data['price']:,} so'm\n"
             f"🔄 <b>Obmen:</b> {escape(data['exchange'])}\n"
             f"🔐 <b>Google:</b> {escape(data['google'])}\n"
-            f"🎮 <b>Game Center:</b> {escape(data['game_center'])}\n"
-            "━━━━━━━━━━━━━━\n\n"
+            f"🎮 <b>Game Center:</b> {escape(data['game_center'])}\n\n"
+            "━━━━━━━━━━━━━━\n"
             f"{comment_line}\n"
-            f"📩 <b>Aloqa:</b> {contact}\n\n"
-            "E'lon berish uchun: @namuna001_bot\n"
+            f"📩 <b>Murojat uchun:</b> {contact}\n\n"
+            "E'lon berish uchun: @razzokeshop_bot\n"
             "#eFootball #akkaunt #sotiladi"
         )
 
@@ -37,8 +37,8 @@ def channel_post_text(data: dict) -> str:
         f"💰 <b>Budjet:</b> {data['budget']:,} so'm\n"
         "━━━━━━━━━━━━━━\n"
         f"{comment_line}\n"
-        f"📩 <b>Aloqa:</b> {contact}\n\n"
-        "E'lon berish uchun: @namuna001_bot\n"
+        f"📩 <b>Murojat uchun:</b> {contact}\n\n"
+        "E'lon berish uchun: @razzokeshop_bot\n"
         "#eFootball #akkaunt #qidirilmoqda"
     )
 

@@ -16,7 +16,6 @@ CHANNEL_LINKS = {
 }
 
 ADMIN_IDS = [
-    1157042774,
     7579990560,
 ]
 
