@@ -97,6 +97,17 @@ def update_pending_post_status(post_id: int, status: str, expected: str = "pendi
     return updated
 
 
+def update_pending_post_payload(post_id: int, payload: dict) -> None:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE pending_posts SET payload = ? WHERE id = ?",
+        (json.dumps(payload, ensure_ascii=False), post_id)
+    )
+    conn.commit()
+    conn.close()
+
+
 def add_user(
     telegram_id: int,
     username: str | None,

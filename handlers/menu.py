@@ -32,14 +32,16 @@ async def admin_handler(message: Message):
         await message.answer("Admin aloqa ma'lumotlari sozlanmagan.")
         return
 
+    admin_buttons = [
+        [InlineKeyboardButton(
+            text=f"✉️ Admin {index} bilan bog'lanish",
+            url=f"tg://user?id={admin_id}"
+        )]
+        for index, admin_id in enumerate(ADMIN_IDS, start=1)
+    ]
     await message.answer(
         "<b>👨‍💼 ADMIN XIZMATI</b>\n\n"
         "💰 Narxi: 10 000 so'm\n\n"
-        "📩 Admin bilan bog'lanish uchun tugmani bosing.",
-        reply_markup=InlineKeyboardMarkup(inline_keyboard=[[
-            InlineKeyboardButton(
-                text="✉️ Adminga yozish",
-                url=f"tg://user?id={ADMIN_IDS[0]}"
-            )
-        ]])
+        "📩 Bog'lanish uchun adminlardan birini tanlang:",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=admin_buttons)
     )

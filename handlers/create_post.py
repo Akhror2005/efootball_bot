@@ -1,4 +1,5 @@
 import re
+import logging
 from html import escape
 
 from aiogram import F, Router
@@ -271,11 +272,10 @@ async def confirm_post(callback: CallbackQuery, state: FSMContext):
         f"🔗 Aloqa: {data['submitter_contact']}\n"
         f"🆔 ID: <code>{user.id}</code>"
     )
-    try:
-        for admin_id in ADMIN_IDS:
-            await callback.bot.send_message(
-                admin_id, admin_text, reply_markup=review_keyboard(post_id)
-            )
+    sent_admins = []
+    failed_admins = []
+    for admin_id in ADMIN_IDS:
+        try:
             photos = data.get("photos", [])
             if len(photos) == 1:
                 await callback.bot.send_photo(admin_id, photos[0])
@@ -289,7 +289,15 @@ async def confirm_post(callback: CallbackQuery, state: FSMContext):
                             admin_id,
                             [InputMediaPhoto(media=file_id) for file_id in batch]
                         )
-    except Exception:
+            await callback.bot.send_message(
+                admin_id, admin_text, reply_markup=review_keyboard(post_id)
+            )
+            sent_admins.append(admin_id)
+        except Exception:
+            logging.exception("E'lonni %s adminga yuborib bo'lmadi", admin_id)
+            failed_admins.append(admin_id)
+
+    if not sent_admins:
         update_pending_post_status(post_id, "failed")
         await callback.message.answer(
             "❌ E'lonni adminga yuborishda xatolik yuz berdi.",
@@ -297,6 +305,9 @@ async def confirm_post(callback: CallbackQuery, state: FSMContext):
         )
         await state.clear()
         return
+
+    if failed_admins:
+        logging.warning("E'lon faqat adminlarga yuborildi: %s", sent_admins)
 
     await callback.message.edit_reply_markup(reply_markup=None)
     await callback.message.answer(

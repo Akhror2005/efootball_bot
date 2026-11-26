@@ -4,7 +4,11 @@ from aiogram import F, Router
 from aiogram.types import CallbackQuery
 
 from config import ADMIN_IDS, REQUIRED_CHANNELS
-from database import get_pending_post, update_pending_post_status
+from database import (
+    get_pending_post,
+    update_pending_post_payload,
+    update_pending_post_status,
+)
 from post_format import send_post
 
 router = Router()
@@ -55,15 +59,26 @@ async def review_post(callback: CallbackQuery, action: str):
         await callback.answer("Bu e'lon avval ko'rib chiqilgan.", show_alert=True)
         return
 
-    try:
-        if not REQUIRED_CHANNELS:
-            raise RuntimeError("Kanal sozlanmagan")
-        await send_post(callback.bot, REQUIRED_CHANNELS[0], post["payload"])
-    except Exception:
-        logging.exception("Tasdiqlangan e'lonni kanalga yuborib bo'lmadi")
+    payload = post["payload"]
+    delivered_channels = payload.get("delivered_channels", [])
+    failed_channels = [] if REQUIRED_CHANNELS else ["kanal sozlanmagan"]
+    for channel in dict.fromkeys(REQUIRED_CHANNELS):
+        if channel in delivered_channels:
+            continue
+        try:
+            await send_post(callback.bot, channel, payload)
+            delivered_channels.append(channel)
+            payload["delivered_channels"] = delivered_channels
+            update_pending_post_payload(post_id, payload)
+        except Exception:
+            logging.exception("E'lonni %s kanaliga yuborib bo'lmadi", channel)
+            failed_channels.append(channel)
+
+    if failed_channels:
         update_pending_post_status(post_id, "pending", expected="publishing")
         await callback.answer(
-            "Kanalga yuborilmadi. Bot kanal admini ekanini tekshiring.",
+            "Quyidagi kanal(lar)ga yuborilmadi: "
+            f"{', '.join(map(str, failed_channels))}. Botni kanal admini qiling.",
             show_alert=True
         )
         return
