@@ -16,11 +16,12 @@ def optional_comment_keyboard(prefix: str):
     ]])
 
 
-def exchange_keyboard():
-    return InlineKeyboardMarkup(inline_keyboard=[[
-        InlineKeyboardButton(text="✅ Bor", callback_data="sell:exchange:yes"),
-        InlineKeyboardButton(text="❌ Yo‘q", callback_data="sell:exchange:no"),
-    ]])
+def sell_type_keyboard():
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="💰 Sotish", callback_data="sell:type:sale")],
+        [InlineKeyboardButton(text="♻️ Sotish + obmen", callback_data="sell:type:sale_exchange")],
+        [InlineKeyboardButton(text="🔄 Obmenning o‘zi", callback_data="sell:type:exchange")],
+    ])
 
 
 def account_status_keyboard():
@@ -48,6 +49,13 @@ def photo_keyboard():
 def preview_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[[
         InlineKeyboardButton(text="✅ Adminga yuborish", callback_data="post:submit"),
+        InlineKeyboardButton(text="❌ Bekor qilish", callback_data="post:cancel"),
+    ]])
+
+
+def preview_retry_keyboard():
+    return InlineKeyboardMarkup(inline_keyboard=[[
+        InlineKeyboardButton(text="🔄 Previewni qayta yuborish", callback_data="post:preview:retry"),
         InlineKeyboardButton(text="❌ Bekor qilish", callback_data="post:cancel"),
     ]])
 
